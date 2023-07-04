@@ -65,9 +65,18 @@ const AuthForm = () => {
             errors={errors}
           />
           <div>
-            <Button />
+            <Button type='submit' fullWidth disabled={isLoading}>
+              {variant === 'LOGIN' ? 'Sign In' : 'Sign Up'}
+            </Button>
           </div>
         </form>
+        <div className='mt-6'>
+          <div className='relative'>
+            <div className='items flex-center absolute inset-0 items-center'>
+              <div className='w-full border-t border-gray-300' />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
 'use client';
 
+import AuthSocialButton from '@/app/(site)/components/AuthSocialButton';
 import Button from '@/app/components/buttons/Button';
 import Input from '@/app/components/inputs/Input';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { BsGithub, BsGoogle } from 'react-icons/bs';
 
 type Variant = 'LOGIN' | 'REGISTER';
 
@@ -48,9 +50,16 @@ const AuthForm = () => {
       <div className='bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10'>
         <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
           {variant === 'REGISTER' && (
-            <Input label='Name' id='name' register={register} errors={errors} />
+            <Input
+              disabled={isLoading}
+              label='Name'
+              id='name'
+              register={register}
+              errors={errors}
+            />
           )}
           <Input
+            disabled={isLoading}
             label='Email'
             id='email'
             type='email'
@@ -58,6 +67,7 @@ const AuthForm = () => {
             errors={errors}
           />
           <Input
+            disabled={isLoading}
             label='Password'
             id='password'
             type='password'
@@ -75,7 +85,32 @@ const AuthForm = () => {
             <div className='items flex-center absolute inset-0 items-center'>
               <div className='w-full border-t border-gray-300' />
             </div>
+            <div className='relative flex justify-center text-sm'>
+              <span className='bg-white px-2 leading-[0.3em] text-gray-500'>
+                Or continue with
+              </span>
+            </div>
           </div>
+        </div>
+        <div className='mt-6 flex gap-2'>
+          <AuthSocialButton
+            icon={BsGithub}
+            onClick={() => socialAction('github')}
+          />
+          <AuthSocialButton
+            icon={BsGoogle}
+            onClick={() => socialAction('github')}
+          />
+        </div>
+      </div>
+      <div className='mt-6 flex justify-center gap-2 px-2 text-sm text-gray-500'>
+        <div>
+          {variant === 'LOGIN'
+            ? 'New to Messenger?'
+            : 'Already have an account?'}
+        </div>
+        <div onClick={toggleVariant} className='cursor-pointer underline'>
+          {variant === 'LOGIN' ? 'Create an account' : 'Login'}
         </div>
       </div>
     </div>

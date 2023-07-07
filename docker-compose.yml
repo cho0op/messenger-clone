@@ -9,4 +9,3 @@ services:
       INIT_WAIT_SEC: 3
     ports:
       - 27017:27017
-

@@ -4,6 +4,7 @@ import AuthSocialButton from '@/app/(site)/components/AuthSocialButton';
 import Button from '@/app/components/buttons/Button';
 import Input from '@/app/components/inputs/Input';
 import axios from 'axios';
+import { signIn } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -39,6 +40,22 @@ const AuthForm = () => {
         });
     }
     if (variant === 'LOGIN') {
+      signIn('credentials', {
+        ...data,
+        redirect: false,
+      })
+        .then((callback) => {
+          if (callback?.error) {
+            toast.error('Invalid Credentials');
+          }
+
+          if (callback?.ok && !callback?.error) {
+            toast.success('Logged in!');
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
 
@@ -53,7 +70,7 @@ const AuthForm = () => {
   const socialAction = (action: string) => {
     setIsLoading(false);
   };
-  console.log('isLoading', isLoading);
+
   return (
     <div className='sm:maw-w-md mt-8 sm:mx-auto sm:w-full'>
       <div className='bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10'>

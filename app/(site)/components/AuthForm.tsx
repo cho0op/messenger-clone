@@ -6,6 +6,7 @@ import Input from '@/app/components/inputs/Input';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { BsGithub, BsGoogle } from 'react-icons/bs';
 
 type Variant = 'LOGIN' | 'REGISTER';
@@ -28,11 +29,17 @@ const AuthForm = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     if (variant === 'REGISTER') {
-      axios.post('api/register', data);
+      axios
+        .post('api/register', data)
+        .catch(() => {
+          toast.error('error');
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
     if (variant === 'LOGIN') {
     }
-    setIsLoading(false);
   };
 
   const toggleVariant = useCallback(() => {
@@ -46,7 +53,7 @@ const AuthForm = () => {
   const socialAction = (action: string) => {
     setIsLoading(false);
   };
-
+  console.log('isLoading', isLoading);
   return (
     <div className='sm:maw-w-md mt-8 sm:mx-auto sm:w-full'>
       <div className='bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10'>

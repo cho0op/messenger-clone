@@ -1,3 +1,4 @@
+import AuthContext from '@/app/context/AuthContext';
 import ToasterContext from '@/app/context/ToasterContext';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <ToasterContext />
-        {children}
+        <AuthContext>
+          <ToasterContext />
+          {children}
+        </AuthContext>
       </body>
     </html>
   );

@@ -15,7 +15,7 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
   label,
   href,
 }) => {
-  return <div>label</div>;
+  return <div>{label}</div>;
 };
 
 export default DesktopItem;

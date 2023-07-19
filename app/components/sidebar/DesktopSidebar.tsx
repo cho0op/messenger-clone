@@ -2,11 +2,18 @@
 
 import DesktopItem from '@/app/components/sidebar/DesktopItem';
 import useRoutes from '@/app/hooks/useRoutes';
-import { useState } from 'react';
+import { User } from '@prisma/client';
+import { ReactElement, useState } from 'react';
 
-const DesktopSidebar = () => {
+interface DesktopSidebarProps {
+  currentUser: User | null;
+}
+
+const DesktopSidebar = ({ currentUser }: DesktopSidebarProps): ReactElement => {
   const routes = useRoutes();
   const [isOpen, setIsOpen] = useState(false);
+
+  console.log(currentUser);
 
   return (
     <div

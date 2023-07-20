@@ -6,7 +6,7 @@ import { User } from '@prisma/client';
 import { ReactElement, useState } from 'react';
 
 interface DesktopSidebarProps {
-  currentUser: User | null;
+  currentUser: User;
 }
 
 const DesktopSidebar = ({ currentUser }: DesktopSidebarProps): ReactElement => {
@@ -44,6 +44,14 @@ const DesktopSidebar = ({ currentUser }: DesktopSidebarProps): ReactElement => {
             );
           })}
         </ul>
+      </nav>
+      <nav className={'mt-4 flex flex-col items-center justify-between'}>
+        <div
+          onClick={() => setIsOpen(true)}
+          className={'cursor-pointer transition hover:opacity-75'}
+        >
+          {' '}
+        </div>
       </nav>
     </div>
   );

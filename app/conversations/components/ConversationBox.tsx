@@ -1,7 +1,9 @@
 'use client';
 
+import Avatar from '@/app/components/sidebar/Avatar';
 import useOtherUser from '@/app/hooks/useOtherUser';
 import { FullConversationType } from '@/app/types';
+import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
@@ -54,7 +56,27 @@ const ConversationBox = ({ data, selected }: ConversationBoxProps) => {
     return 'Started a conversation';
   }, [lastMessage?.body, lastMessage?.image]);
 
-  return <div>asdasd</div>;
+  return (
+    <div
+      onClick={handleClick}
+      className={clsx(
+        `
+      relative
+      flex
+      w-full
+      cursor-pointer
+      items-center
+      space-x-3
+      rounded-lg
+      transition
+      hover:bg-neutral-100
+    `,
+        selected ? 'bg-neutral-100' : 'bg-white'
+      )}
+    >
+      <Avatar user={otherUser} />
+    </div>
+  );
 };
 
 export default ConversationBox;

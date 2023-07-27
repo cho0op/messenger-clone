@@ -1,5 +1,6 @@
 'use client';
 
+import ConversationBox from '@/app/conversations/components/ConversationBox';
 import useConversation from '@/app/hooks/useConversation';
 import { FullConversationType } from '@/app/types';
 import clsx from 'clsx';
@@ -44,6 +45,15 @@ const ConversationList = ({
             <MdOutlineGroupAdd size={20} />
           </div>
         </div>
+        {items.map((item) => {
+          return (
+            <ConversationBox
+              key={item.id}
+              data={item}
+              selected={conversationId === item.id}
+            />
+          );
+        })}
       </div>
     </aside>
   );

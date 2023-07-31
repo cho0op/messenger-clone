@@ -1,10 +1,10 @@
 import getCurrentUser from '@/app/actions/getCurrentUser';
 import prismaClient from '@/app/libs/prismadb';
-import { Conversation } from '@prisma/client';
+import { Conversation, User } from '@prisma/client';
 
 export const getConversationById = async (
   conversationId: string
-): Promise<Conversation | null> => {
+): Promise<(Conversation & { users: User[] }) | null> => {
   const currentUser = await getCurrentUser();
   if (!currentUser?.email) {
     return null;

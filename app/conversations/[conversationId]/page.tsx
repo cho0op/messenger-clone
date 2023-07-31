@@ -1,3 +1,9 @@
+import getConversationById from '@/app/actions/getConversationById';
+
+import getMessages from '@/app/actions/getMessages';
+
+import EmptyState from '@/app/components/EmptyState';
+import Header from '@/app/conversations/[conversationId]/components/Header';
 import { ReactElement } from 'react';
 
 interface IParams {
@@ -9,7 +15,27 @@ const ConversationId = async ({
 }: {
   params: IParams;
 }): Promise<ReactElement> => {
-  return <div>Converation id</div>;
+  const { conversationId } = params;
+  const conversation = await getConversationById(conversationId);
+  const messages = await getMessages(conversationId);
+
+  if (!conversation) {
+    return (
+      <div className='h-full lg:pl-80'>
+        <div className='flex h-full flex-col'>
+          <EmptyState />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className='h-full lg:pl-80'>
+      <div className='flex h-full flex-col'>
+        <Header conversation={conversation} />
+      </div>
+    </div>
+  );
 };
 
 export default ConversationId;

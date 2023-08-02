@@ -4,6 +4,7 @@ import getMessages from '@/app/actions/getMessages';
 
 import EmptyState from '@/app/components/EmptyState';
 import Body from '@/app/conversations/[conversationId]/components/Body';
+import Form from '@/app/conversations/[conversationId]/components/Form';
 import Header from '@/app/conversations/[conversationId]/components/Header';
 import { ReactElement } from 'react';
 
@@ -35,6 +36,7 @@ const ConversationId = async ({
       <div className='flex h-full flex-col'>
         <Header conversation={conversation} />
         <Body />
+        <Form />
       </div>
     </div>
   );

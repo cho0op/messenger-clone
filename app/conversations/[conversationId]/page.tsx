@@ -19,6 +19,7 @@ const ConversationId = async ({
 }): Promise<ReactElement> => {
   const { conversationId } = params;
   const conversation = await getConversationById(conversationId);
+
   const messages = await getMessages(conversationId);
 
   if (!conversation) {

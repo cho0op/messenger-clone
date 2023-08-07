@@ -8,7 +8,7 @@ const getMessages = async (conversationId: string) => {
       orderBy: { createdAt: 'asc' },
     });
   } catch (error: any) {
-    return null;
+    return [];
   }
 };
 

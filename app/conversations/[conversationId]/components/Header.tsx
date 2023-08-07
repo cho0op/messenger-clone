@@ -36,7 +36,7 @@ const Header = ({ conversation }: HeaderProps): ReactElement => {
         </Link>
         <Avatar user={otherUser} />
         <div className='flex flex-col'>
-          <div>{conversation.name || otherUser.name}</div>
+          <div>{conversation.name || otherUser?.name}</div>
           <div className='text-sm font-light text-neutral-500'>
             {statusText}
           </div>

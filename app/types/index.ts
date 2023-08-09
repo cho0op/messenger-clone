@@ -9,3 +9,7 @@ export type FullConversationType = Conversation & {
   users: User[];
   messages: FullMessageType[];
 };
+
+export type ConversationWithUsers = Conversation & {
+  users: User[];
+};

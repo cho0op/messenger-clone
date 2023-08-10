@@ -52,6 +52,7 @@ const Header = ({ conversation }: HeaderProps): ReactElement => {
         <HiEllipsisHorizontal
           size={32}
           className='cursor-pointer text-sky-500 transition hover:text-sky-600'
+          onClick={() => setDrawerOpen(true)}
         />
       </div>
     </>

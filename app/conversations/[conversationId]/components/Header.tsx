@@ -30,7 +30,6 @@ const Header = ({ conversation }: HeaderProps): ReactElement => {
         data={conversation}
         isOpen={drawerOpen}
         onClose={() => {
-          console.log('close');
           setDrawerOpen(false);
         }}
       />

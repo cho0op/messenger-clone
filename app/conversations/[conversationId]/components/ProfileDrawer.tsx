@@ -1,12 +1,12 @@
 'use client';
 
-import Modal from '@/app/components/Modal';
 import Avatar from '@/app/components/sidebar/Avatar';
+import ConfirmModal from '@/app/conversations/[conversationId]/components/ConfirmModal';
 import useOtherUser from '@/app/hooks/useOtherUser';
 import { ConversationWithUsers } from '@/app/types';
 import { Dialog, Transition } from '@headlessui/react';
 import { format } from 'date-fns';
-import { Fragment, useMemo } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { IoClose, IoTrash } from 'react-icons/io5';
 
 interface ProfileDrawerProps {
@@ -16,7 +16,14 @@ interface ProfileDrawerProps {
 }
 
 const ProfileDrawer = ({ onClose, isOpen, data }: ProfileDrawerProps) => {
+  const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
+
   const otherUser = useOtherUser(data);
+
+  const onConfirmClose = () => {
+    setConfirmOpen(false);
+  };
+
   const joinedDate = useMemo(() => {
     if (otherUser?.createdAt) {
       return format(new Date(otherUser?.createdAt), 'PP');
@@ -37,7 +44,7 @@ const ProfileDrawer = ({ onClose, isOpen, data }: ProfileDrawerProps) => {
 
   return (
     <>
-      <Modal isOpen onClose={() => {}} />
+      <ConfirmModal isOpen={confirmOpen} onClose={onConfirmClose} />
       <Transition.Root show={isOpen} as={Fragment}>
         <Dialog as='div' className='relative z-50' onClose={onClose}>
           <Transition.Child
@@ -89,7 +96,7 @@ const ProfileDrawer = ({ onClose, isOpen, data }: ProfileDrawerProps) => {
                           </div>
                           <div className='my-8 flex gap-10'>
                             <div
-                              // onClick={() => {}}
+                              onClick={() => setConfirmOpen(true)}
                               className='flex cursor-pointer flex-col items-center gap-3 hover:opacity-75'
                             >
                               <div className='flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100'>

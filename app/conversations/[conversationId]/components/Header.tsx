@@ -29,7 +29,10 @@ const Header = ({ conversation }: HeaderProps): ReactElement => {
       <ProfileDrawer
         data={conversation}
         isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        onClose={() => {
+          console.log('close');
+          setDrawerOpen(false);
+        }}
       />
       <div className='flex w-full justify-between border-b-[1px] bg-white px-4 py-3 shadow-sm sm:px-4 lg:px-6'>
         <div className='flex items-center gap-3'>

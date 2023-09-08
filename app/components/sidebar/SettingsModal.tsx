@@ -1,7 +1,10 @@
 import Modal from '@/app/components/Modal';
+import Button from '@/app/components/buttons/Button';
 import Input from '@/app/components/inputs/Input';
 import { User } from '@prisma/client';
 import axios from 'axios';
+import { CldUploadButton } from 'next-cloudinary';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -73,7 +76,40 @@ const SettingsModal = ({
                 required
                 register={register}
               />
+              <div>
+                <label className='block text-sm font-medium leading-6 text-gray-900'>
+                  Photo
+                </label>
+                <div className='mt-2 flex items-center gap-x-3'>
+                  <Image
+                    alt='avatar edit photo'
+                    width='48'
+                    height='48'
+                    className='rounded-full'
+                    src={
+                      image || currentUser?.image || '/images/placeholder.jpg'
+                    }
+                  />
+                  <CldUploadButton
+                    options={{ maxFiles: 1 }}
+                    onUpload={handleUpload}
+                    uploadPreset='nk0aosih'
+                  >
+                    <Button disabled={isLoading} secondary type='button'>
+                      Change
+                    </Button>
+                  </CldUploadButton>
+                </div>
+              </div>
             </div>
+          </div>
+          <div className='mt-6 flex items-center justify-end gap-x-6'>
+            <Button disabled={isLoading} secondary onClick={onClose}>
+              Cancel
+            </Button>
+            <Button disabled={isLoading} type='submit'>
+              Save
+            </Button>
           </div>
         </div>
       </form>

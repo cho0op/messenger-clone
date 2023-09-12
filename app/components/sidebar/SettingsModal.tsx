@@ -71,7 +71,7 @@ const SettingsModal = ({
               <Input
                 id='name'
                 disabled={isLoading}
-                label='name'
+                label='Name'
                 errors={errors}
                 required
                 register={register}

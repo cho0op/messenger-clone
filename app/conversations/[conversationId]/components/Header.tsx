@@ -1,6 +1,7 @@
 'use client';
 
 import Avatar from '@/app/components/sidebar/Avatar';
+import AvatarGroup from '@/app/components/sidebar/AvatarGroup';
 import ProfileDrawer from '@/app/conversations/[conversationId]/components/ProfileDrawer';
 import useOtherUser from '@/app/hooks/useOtherUser';
 import { ConversationWithUsers } from '@/app/types';
@@ -43,7 +44,11 @@ const Header = ({ conversation }: HeaderProps): ReactElement => {
           >
             <HiChevronLeft />
           </Link>
-          <Avatar user={otherUser} />
+          {conversation.isGroup ? (
+            <AvatarGroup users={conversation.users} />
+          ) : (
+            <Avatar user={otherUser} />
+          )}
           <div className='flex flex-col'>
             <div>{conversation.name || otherUser?.name}</div>
             <div className='text-sm font-light text-neutral-500'>

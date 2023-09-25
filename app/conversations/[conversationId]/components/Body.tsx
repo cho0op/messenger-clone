@@ -19,23 +19,23 @@ const Body = ({ initialMessages }: BodyProps): ReactElement => {
 
   const { conversationId } = useConversation();
 
-  const messageHandler = (message: FullMessageType) => {
-    axios.post(`/api/conversations/${conversationId}/seen`);
-    setMessages((current) => {
-      if (find(current, { id: message.id })) {
-        return current;
-      }
-
-      return [...current, message];
-    });
-    bottomRef?.current?.scrollIntoView();
-  };
-
   useEffect(() => {
     axios.post(`/api/conversations/${conversationId}/seen`);
   }, [conversationId]);
 
   useEffect(() => {
+    const messageHandler = (message: FullMessageType) => {
+      axios.post(`/api/conversations/${conversationId}/seen`);
+      setMessages((current) => {
+        if (find(current, { id: message.id })) {
+          return current;
+        }
+
+        return [...current, message];
+      });
+      bottomRef?.current?.scrollIntoView();
+    };
+
     pusherClient.subscribe(conversationId);
     bottomRef?.current?.scrollIntoView();
 
@@ -45,7 +45,7 @@ const Body = ({ initialMessages }: BodyProps): ReactElement => {
       pusherClient.unsubscribe(conversationId);
       pusherClient.unbind('messages:new', messageHandler);
     };
-  }, [conversationId]);
+  }, [conversationId, messageHandler]);
 
   return (
     <div className='flex-1 overflow-y-auto'>

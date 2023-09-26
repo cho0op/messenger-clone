@@ -64,14 +64,22 @@ const ConversationList = ({
       });
     };
 
+    const deleteConversationHandler = (conversation: FullConversationType) => {
+      setItems((current) => {
+        return current.filter((item) => item.id !== conversation.id);
+      });
+    };
+
     pusherClient.subscribe(userEmail);
     pusherClient.bind('conversation:update', updateConversationHandler);
     pusherClient.bind('conversation:new', newConversationHandler);
+    pusherClient.bind('conversation:delete', deleteConversationHandler);
 
     return () => {
       pusherClient.unsubscribe(userEmail);
       pusherClient.unbind('conversation:update', updateConversationHandler);
       pusherClient.unbind('conversation:new', newConversationHandler);
+      pusherClient.bind('conversation:delete', deleteConversationHandler);
     };
   }, [userEmail]);
 

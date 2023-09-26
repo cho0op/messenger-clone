@@ -68,6 +68,10 @@ const ConversationList = ({
       setItems((current) => {
         return current.filter((item) => item.id !== conversation.id);
       });
+
+      if (conversationId === conversation.id) {
+        router.push('/conversations');
+      }
     };
 
     pusherClient.subscribe(userEmail);
@@ -81,7 +85,7 @@ const ConversationList = ({
       pusherClient.unbind('conversation:new', newConversationHandler);
       pusherClient.bind('conversation:delete', deleteConversationHandler);
     };
-  }, [userEmail]);
+  }, [conversationId, router, userEmail]);
 
   return (
     <>

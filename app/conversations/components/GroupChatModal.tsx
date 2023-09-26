@@ -37,7 +37,6 @@ const GroupChatModal = ({ onClose, isOpen, users }: GroupChatModalProps) => {
     setIsLoading(true);
     try {
       await axios.post('/api/conversations', { ...data, isGroup: true });
-      console.log(data);
       toast.success('Group chat created');
       router.refresh();
       onClose();

@@ -3,11 +3,13 @@
 import ConversationBox from '@/app/conversations/components/ConversationBox';
 import GroupChatModal from '@/app/conversations/components/GroupChatModal';
 import useConversation from '@/app/hooks/useConversation';
+import { pusherClient } from '@/app/libs/pusher';
 import { FullConversationType } from '@/app/types';
 import { User } from '@prisma/client';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 
 interface ConversationListProps {
@@ -22,8 +24,56 @@ const ConversationList = ({
   const [items, setItems] = useState(initialItems);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-
+  const session = useSession();
+  const userEmail = useMemo(() => {
+    return session.data?.user?.email as string;
+  }, [session.data?.user?.email]);
   const { conversationId, isOpen } = useConversation();
+
+  useEffect(() => {
+    if (!userEmail) {
+      return;
+    }
+
+    const newConversationHandler = (conversation: FullConversationType) => {
+      setItems((current) => {
+        if (current.find((item) => item.id === conversation.id)) {
+          return current;
+        }
+
+        return [conversation, ...current];
+      });
+    };
+
+    const updateConversationHandler = ({
+      id,
+      messages,
+    }: FullConversationType) => {
+      setItems((current) => {
+        return current.map((item) => {
+          if (item.id === id) {
+            const lastMessage = messages[messages.length - 1];
+            return {
+              ...item,
+              messages: [...item.messages, lastMessage],
+              lastMessageAt: lastMessage.createdAt,
+            };
+          }
+          return item;
+        });
+      });
+    };
+
+    pusherClient.subscribe(userEmail);
+    pusherClient.bind('conversation:update', updateConversationHandler);
+    pusherClient.bind('conversation:new', newConversationHandler);
+
+    return () => {
+      pusherClient.unsubscribe(userEmail);
+      pusherClient.unbind('conversation:update', updateConversationHandler);
+      pusherClient.unbind('conversation:new', newConversationHandler);
+    };
+  }, [userEmail]);
 
   return (
     <>

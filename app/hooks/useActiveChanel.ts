@@ -4,7 +4,7 @@ import { Channel, Members } from 'pusher-js';
 import { useEffect, useState } from 'react';
 
 const useActiveChanel = () => {
-  const { set, members, add, remove } = useActiveList();
+  const { set, add, remove } = useActiveList();
   const [activeChanel, setActiveChanel] = useState<Channel | null>(null);
 
   useEffect(() => {
@@ -25,8 +25,21 @@ const useActiveChanel = () => {
       set(initialMembers);
     });
 
-    return () => {};
-  }, [activeChanel]);
+    channel.bind('pusher:member_added', (member: Record<string, any>) => {
+      add(member.id);
+    });
+
+    channel.bind('pusher:member_removed', (member: Record<string, any>) => {
+      remove(member.id);
+    });
+
+    return () => {
+      if (activeChanel) {
+        pusherClient.unsubscribe('presence-messenger');
+        setActiveChanel(null);
+      }
+    };
+  }, [activeChanel, add, remove, set]);
 };
 
 export default useActiveChanel;

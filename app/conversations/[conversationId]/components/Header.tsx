@@ -3,6 +3,7 @@
 import Avatar from '@/app/components/sidebar/Avatar';
 import AvatarGroup from '@/app/components/sidebar/AvatarGroup';
 import ProfileDrawer from '@/app/conversations/[conversationId]/components/ProfileDrawer';
+import useActiveList from '@/app/hooks/useActiveList';
 import useOtherUser from '@/app/hooks/useOtherUser';
 import { ConversationWithUsers } from '@/app/types';
 import Link from 'next/link';
@@ -17,13 +18,16 @@ const Header = ({ conversation }: HeaderProps): ReactElement => {
   const otherUser = useOtherUser(conversation);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
+  const { members } = useActiveList();
+  const isActive = otherUser?.email && members.indexOf(otherUser.email) !== -1;
+
   const statusText = useMemo(() => {
     if (conversation?.isGroup) {
       return `${conversation.users.length} members`;
     }
 
-    return 'Active';
-  }, [conversation]);
+    return isActive ? 'Active' : 'Offline';
+  }, [conversation, isActive]);
 
   return (
     <>

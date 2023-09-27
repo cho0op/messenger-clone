@@ -3,6 +3,7 @@
 import Avatar from '@/app/components/sidebar/Avatar';
 import AvatarGroup from '@/app/components/sidebar/AvatarGroup';
 import ConfirmModal from '@/app/conversations/[conversationId]/components/ConfirmModal';
+import useActiveList from '@/app/hooks/useActiveList';
 import useOtherUser from '@/app/hooks/useOtherUser';
 import { ConversationWithUsers } from '@/app/types';
 import { Dialog, Transition } from '@headlessui/react';
@@ -18,8 +19,10 @@ interface ProfileDrawerProps {
 
 const ProfileDrawer = ({ onClose, isOpen, data }: ProfileDrawerProps) => {
   const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
-
+  const { members } = useActiveList();
   const otherUser = useOtherUser(data);
+
+  const isActive = otherUser?.email && members.indexOf(otherUser.email) !== -1;
 
   const onConfirmClose = () => {
     setConfirmOpen(false);
@@ -40,8 +43,8 @@ const ProfileDrawer = ({ onClose, isOpen, data }: ProfileDrawerProps) => {
       return `${data.users.length} members`;
     }
 
-    return 'Active';
-  }, [data.isGroup, data.users.length]);
+    return isActive ? 'Active' : 'Offline';
+  }, [data.isGroup, data.users.length, isActive]);
 
   return (
     <>
